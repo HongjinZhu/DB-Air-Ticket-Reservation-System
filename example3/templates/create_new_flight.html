@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Flight</title>
+</head>
+<body>
+    <form action = "/airline_staff/{{session['username']}}/create_new_flight" method="POST">
+        <h2>Welcome, {{session['username']}}!</h2>
+        <h3>You are now creating a new flight for airline {{session['company']}}</h3>
+        <div >
+        </div><table>
+            <tr>
+                <td><span>Departure Airport</span></td>
+                <td>
+                    <select name="departure_airport" required>
+                        {% for i in all %}
+                        <option value = "{{i}}" > {{i}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><span>Arrival Airport</span></td>
+                <td> <select name="arrival_airport" required>
+                    {% for i in all %}
+                    <option value = "{{i}}" > {{i}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td> <span>Departure Time</span></td>
+                <td><input type="datetime-local" name = "departure_time" required></td>
+            </tr>
+            <tr>
+                <td><span>Arrival Time</span></td>
+                <td> <input type="datetime-local" name = "arrival_time" required></td>
+            </tr>
+            <tr>
+                <td><span>Price</span></td>
+                <td>  <input type="text" name = "price" required><br></td>
+            </tr>
+            <tr>
+                <td><span>Status</span></td>
+                <td>
+                    <select name="Status" required>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="In progress">In Progress</option>
+                        <option value="delay">Delayed</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+            <td><span>Airplane ID </span></td>
+                <td><select name="airplane_id" required>
+                    {% for i in all_ids %}
+                    <option value = "{{i}}" > {{i}}</option>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+        <button type="submit"> Create </button>
+        </div>
+        </form>  
+    </form>
+    <a href = "{{ url_for('staff_home', staff_email = session['username'], errro = '') }}";> <button type ="button">Go Back</button> </a>
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    {% if success %}
+    <p class="error"> {{success}} The corresponding flight number is {{flight_num}}. </p>
+    {% endif %}
+    
+</body>
+</html>

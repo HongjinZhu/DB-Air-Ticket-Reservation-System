@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View all customer</title>
+</head>
+<body>
+    {% if customer%}
+    <h3>Customer list for Airline {{airline_name}}, Flight number {{flight_num}}</h3>
+    <form action="/airline_staff/{{session['username']}}" method="POST">
+        <div>
+            <table>
+                <tr>
+                    <td>customer_email</td>
+                </tr>
+                {%for row in customer%}
+                <tr>
+                    <td>{{row['customer_email']}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </form>
+    {% endif %}
+    {% if not customer %}
+        <p ><strong>Woops: </strong> No customer bought ticket for the flight! </p>
+    {% endif %}
+    <a href = "{{ url_for('staff_home', staff_email = session['username'], errro = '') }}";> <button type ="button">Go Back</button> </a>
+</body>
+</html>

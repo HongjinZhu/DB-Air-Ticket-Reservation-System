@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>agent_home</title>
+</head>
+
+
+<body>
+    <form action="/agent_home/{{session['username']}}" method="POST">
+        <h1>  Welcome, {{session['role']}}: {{session['username']}} ! 
+        </h1>
+    </form>
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+    <div>
+        <h2>View My Upcoming Flights</h2> 
+            <form action="/agent_home/{{session['username']}}" method="POST">
+                <div>
+                    <span>Start Date</span>
+                    <input type="date" name = "departure_date">
+                    <span>End Date</span>
+                    <input type="date" name = "arrival_date">
+                    <span>Flight Number</span>
+                    <input type="text" name = "flight">
+                    <span>Departure Airport</span>
+                    <input type="text" name = "departure_airport">
+                    <span>Arrival Airport</span>
+                    <input type="text" name = "arrival_airport">
+                    <span>Departure City</span>
+                    <input type="text" name = "departure_city">
+                    <span>Arrival City</span>
+                    <input type="text" name = "arrival_city">
+                    <span>Customer Name</span>
+                    <input type="text" name = "customer_name">
+                    <button type="submit"> Search </button>
+                </div>
+            </form>
+            {% if not search_flight %}
+            <p ><strong>Woops: </strong> You have no corresponding records! </p>
+            {% endif %}
+        <table border = "1" cellspacing="0">
+            <tr>
+                <td>airline_name</td>
+                <td>flight_num</td>
+                <td>departure_airport</td>
+                <td>departure_time</td>
+                <td>arrival_airport</td>
+                <td>arrival_time</td>
+                <td>price</td>
+                <td>status</td>
+                <td>airplane_id</td>
+                <td>customer_email</td>
+            </tr>
+            {%for row in search_flight%}
+            <tr>
+                <!-- if select all from db, then output is a dictionary,
+                if select specifically then the output is a list -->
+                <td>{{row['airline_name']}}</td>
+                <td>{{row['flight_num']}}</td>
+                <td>{{row['departure_airport']}}</td>
+                <td>{{row['departure_time']}}</td>
+                <td>{{row['arrival_airport']}}</td>
+                <td>{{row['arrival_time']}}</td>
+                <td>{{row['price']}}</td>
+                <td>{{row['status']}}</td>
+                <td>{{row['airplane_id']}}</td>
+                <td>{{row['customer_email']}}</td> 
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <h2>View My Commision</h2> 
+        <form  method="POST" action="/agent_home/{{session['username']}}">
+
+
+        <h3>
+            
+            {% if month_money%}
+            Total amount of commission received in the past 30 days: {{month_money}}<br>
+            
+            {% if tnum != 0%}
+            Average commission received per ticket booked in the past 30 days: {{month_money/tnum}}<br>
+            {%else%}
+            Average commission received per ticket booked in the past 30 days: 0<br>
+            {%endif%}
+            
+            Total number of tickets sold in the past 30 days: {{tnum}}
+            {% endif %}
+        </h3>
+        </form>
+
+        <form  method="POST" action="/agent_home/{{session['username']}}">
+            <div class="input-group mb-3">
+              <span >From:</span>
+              <input type="date" name = "begin_date" class="form-control">
+              <span >To:</span>
+              <input type="date" name = "end_date" class="form-control">
+              <button type="submit">Search</button>
+            
+            </div>
+        </form>
+        <h3>
+            {% if inputmoney%}
+            Total amount of commission received: {{inputmoney}}<br>
+            Total number of tickets sold: {{inputnum}}<br>
+            {% endif %}
+        </h3>
+
+    </div>
+    <div>
+        <h2>View Top Customers</h2> 
+
+        <!-- return an image -->
+        
+        <img src="{{ image1 }}" align="middle"/>
+        <img src="{{ image2 }}" align="middle"/>
+        <!-- Here should be a image -->
+        <!-- View Top Customer -->
+    </div>  
+    
+    <div>
+        <h2>More Options:</h2>
+        <button onclick="window.location.href='/upcoming_flight'";> Search For Flights and Purchase</button> <br>
+        <button onclick="window.location.href='/login'";> Log Out </button><br>
+    </div>
+    {% if error %}
+    <p ><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Frequent Customer in Details</title>
+</head>
+<body>
+    <h2>Welcome, {{session['username']}}!</h2> 
+    <h3>You are viewing records of <strong> {{customer_email}} </strong> at airline <strong>{{session['company']}}</strong>: </h3>
+
+    <table border = "1" cellspacing="0">
+        <tr>
+            <td>flight_num</td>
+            <td>departure_airport</td>
+            <td>departure_time</td>
+            <td>arrival_airport</td>
+            <td>arrival_time</td>
+            <td>price</td>
+            <td>status</td>
+            <td>airplane_id</td>
+            <td>ticket_id</td>
+            <td>booking_agent_id</td>
+            <td>purchase_date</td>
+        </tr>
+        {%for row in data%}
+        <tr>
+            <td>{{row['flight_num']}}</td>
+            <td>{{row['departure_airport']}}</td>
+            <td>{{row['departure_time']}}</td>
+            <td>{{row['arrival_airport']}}</td>
+            <td>{{row['arrival_time']}}</td>
+            <td>{{row['price']}}</td>
+            <td>{{row['status']}}</td>
+            <td>{{row['airplane_id']}}</td>
+            <td>{{row['ticket_id']}}</td>
+            <td>{{row['booking_agent_id']}}</td>
+            <td>{{row['purchase_date']}}</td>  
+        </tr>
+        {% endfor %}
+    </table>
+    
+
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+
+    <button onclick="window.location.href='/airline_staff/{{session.username|e}}'";>Go Back</button>   
+</body>
+</html>

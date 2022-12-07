@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Status of Flights</title>
+</head>
+<body>
+    <h2>Welcome, Operator {{session['username']}}!</h2>
+    <h3>You are changing flight status for airline {{session['company']}}:</h3>
+    
+        <table border = "1" cellspacing="0">
+            <tr>
+                <td>airline_name</td>
+                <td>flight_num</td>
+                <td>departure_airport</td>
+                <td>departure_time</td>
+                <td>arrival_airport</td>
+                <td>arrival_time</td>
+                <td>price</td>
+                <td>status</td>
+                <td>airplane_id</td>
+                <td>Change Status To</td>
+                <td>Action</td>
+
+            </tr>
+            {%for row in data%}
+            <tr>
+                <td>{{row['airline_name']}}</td>
+                <td>{{row['flight_num']}}</td>
+                <td>{{row['departure_airport']}}</td>
+                <td>{{row['departure_time']}}</td>
+                <td>{{row['arrival_airport']}}</td>
+                <td>{{row['arrival_time']}}</td>
+                <td>{{row['price']}}</td>
+                <td>{{row['status']}}</td>
+                <td>{{row['airplane_id']}}</td>
+                
+                <form action="{{ url_for('change_flight_status', staff_email = session['username'], 
+                airline_name = session['company'], flight_num = row['flight_num']) }}" 
+                method ="POST">
+                <td>
+                    <select name='selectedS' id='selectedS' > 
+                        <option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+                        <option value='Inprogress'> Inprogress </option>
+                        <option value='Upcoming'> Upcoming </option>
+                        <option value='Delay'> Delay </option>
+                    </select>
+                </td>
+                <td>
+                    <input type="submit"  name="submit" value="Change Status" />
+                </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+
+    <button onclick="window.location.href='/airline_staff/{{session.username|e}}'";>Go Back</button>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new airports</title>
+</head>
+<body>
+    <form action = "/airline_staff/{{session['username']}}/add_new_airports" method="POST">
+        <h2>Welcome, {{session['username']}}!</h2>
+        <h3>You are creating a new airport for airline {{session['company']}}: </h3>
+        <div >
+        </div><table>
+            <tr>
+                <td><span> Airport Name </span></td>
+                <td>
+                    <input name="name" type = "text" required>
+                </td>
+            </tr>
+            <tr>
+                <td><span> Airport City </span></td>
+                <td>  <input type="text" name = "city" required><br></td>
+            </tr>
+        </table>
+        <button type="submit"> Create </button>
+        </div>
+        </form>  
+    </form>    
+    <a href = "{{ url_for('staff_home', staff_email = session['username'], errro = '') }}";> <button type ="button">Go Back</button> </a>
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    {% if success %}
+    <p class="error"><strong>{{success}} You have successfully created a new airport called {{name}} in {{city}}.</strong>  </p>
+    {% endif %}
+    
+</body>
+</html>
