@@ -5,7 +5,7 @@ CREATE TABLE Airline(
 CREATE TABLE AirlineStaff(
     username varchar(20) NOT null,
     airline_name varchar(20),
-    s_password varchar(20),
+    s_password varchar(256),
     first_name varchar(20),
     last_name varchar(20),
     date_of_birth date,
@@ -54,7 +54,7 @@ CREATE TABLE Ticket(
 CREATE TABLE Customer(
     email varchar(20),
     name varchar(20),
-    c_password varchar(20),
+    c_password varchar(256),
     building_number numeric(10,0),
     street varchar(20),
     city varchar(20),
@@ -68,7 +68,7 @@ CREATE TABLE Customer(
     
 CREATE TABLE BookingAgent(
     email varchar(20),
-    b_password varchar(20),
+    b_password varchar(256),
     b_id varchar(20),
     airline_name varchar(20),
     PRIMARY KEY (email),
