@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>Grant Permission</title>
+</head>
+<body>
+    <h2>Grant Permissions for Other Staffs</h2>
+        <table class="center" border = "1" cellspacing="0">
+            <tr>
+                <td>Staff Name</td>
+                <td>Current Permission Type</td>
+                <td>Grant Permission</td>
+                <td>Click to Confirm</td>
+            </tr>
+            
+            {%for row in data%}
+            <tr>
+                <td>{{row['username']}}</td>
+                <td>{{row['permission']}}</td>
+                <form 
+                action="{{ url_for('grant_permission', staff_email = session['username'], collegue_email = row['username']) }}" 
+                method ="POST">
+                <!-- {{row['username']}} -->
+                <td>
+                    <select name='selectedP' id='selectedP' > 
+                        <option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+                        <option value='Admin'> Admin </option>
+                        <option value='Operator'> Operator </option>
+                    </select>
+                </td>
+                <td>
+                    <input class="button" type="submit"  name="submit" value="Confirm Granting" />
+                </td>
+                </form>
+            </tr>
+            
+            {% endfor %}
+            <!-- <input type="submit"  name="submit" value="Grant Permission" /><br> -->
+            <!-- </form> -->
+        </table>
+        
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+
+    <button class="button" onclick="window.location.href='/airline_staff/{{session.username|e}}'";>Return to Staff Home</button>
+</body>
+</html>

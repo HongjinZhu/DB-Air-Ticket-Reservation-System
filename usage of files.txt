@@ -1,0 +1,27 @@
+blog.py -- our main back end code, it connect the sql and website
+welcome.html -- people can login, Register and do the pubulic search in thsi page
+login.html -- people can login in through this html
+
+customer_register.html -- customer can regist in this page
+agent_register.html -- cagent can regist in this page
+staff_register.html -- staff can regist in this page
+
+customer_home.html -- home page after a user logs in as a customer
+aggent_home.html -- home page after a user logs in as a aggent
+
+staff_home.html -- home page after a user logs in as a staff
+    view_all_customer.html -- staff view customer on a specified flights
+    view_freq_c.html -- view customers detail from clicking on staff home
+    change_flight_status.html -- staff with operator permission changing flight status will be directed here
+    grant_permission.html -- staff with admin permission granting permissions to their colleagues
+    detailed_report.html -- display report and plots on number of tickets sold (directed from staff home)
+
+    add_booking_agents.html -- add the existed booking agent to the airline
+    add_new_airplanes.html -- create new airplane
+    add_new airports -- create new airports
+    create_new_flight -- create new flight
+
+
+back.html -- the page appeared if customer/agent got error message when they bought the ticket and lead them to other page
+
+upcoming_flight.html -- no matter logged in or not, view upcoming flights and search according to constraints

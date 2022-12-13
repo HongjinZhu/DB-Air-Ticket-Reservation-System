@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>Create New Flight</title>
+</head>
+<body>
+    <form action = "/airline_staff/{{session['username']}}/create_new_flight" method="POST">
+        <h2>Create a New Flight for {{session['company']}} Airlines</h2>
+        <div >
+        </div><table class="center">
+            <tr>
+                <td><span>Departure Airport</span></td>
+                <td>
+                    <select name="departure_airport" required>
+                        {% for i in all %}
+                        <option value = "{{i}}" > {{i}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><span>Arrival Airport</span></td>
+                <td> <select name="arrival_airport" required>
+                    {% for i in all %}
+                    <option value = "{{i}}" > {{i}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td><span>Flight Number</span></td>
+                <td>  <input type="text" name = "flight_num" required><br></td>
+            </tr>
+            <tr>
+                <td> <span>Departure Time</span></td>
+                <td><input type="datetime-local" name = "departure_time" required></td>
+            </tr>
+            <tr>
+                <td><span>Arrival Time</span></td>
+                <td> <input type="datetime-local" name = "arrival_time" required></td>
+            </tr>
+            <tr>
+                <td><span>Price</span></td>
+                <td>  <input type="text" name = "price" required><br></td>
+            </tr>
+            <tr>
+                <td><span>Status</span></td>
+                <td>
+                    <select name="Status" required>
+                        <option value="upcoming">upcoming</option>
+                        <option value="in-progress">in-progress</option>
+                        <option value="delay">delay</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+            <td><span>Airplane ID </span></td>
+                <td><select name="airplane_id" required>
+                    {% for i in all_ids %}
+                    <option value = "{{i}}" > {{i}}</option>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+        <button class="button" type="submit"> Create </button>
+        </div>
+        </form>  
+    </form>
+    <a href = "{{ url_for('staff_home', staff_email = session['username'], errro = '') }}";> <button class="button" type ="button">Return to Staff Home</button> </a>
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    {% if success %}
+    <p class="error"> {{success}} The corresponding flight number is {{flight_num}}. </p>
+    {% endif %}
+    
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>agent_home</title>
+</head>
+
+
+<body>
+    <form action="/agent_home/{{session['username']}}" method="POST">
+        <h1> {{session['role']}} {{session['username']}} Home </h1>
+    </form>
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+    <div>
+        <h2>Upcoming Flights</h2> 
+            <form action="/agent_home/{{session['username']}}" method="POST">
+                <div>
+                    <span>Start Date</span>
+                    <input type="date" name = "departure_date">
+                    <span>End Date</span>
+                    <input type="date" name = "arrival_date">
+                    <span>Flight Number</span>
+                    <input type="text" name = "flight">
+                    <span>Departure Airport</span>
+                    <input type="text" name = "departure_airport">
+                    <span>Arrival Airport</span>
+                    <input type="text" name = "arrival_airport">
+                    <span>Departure City</span>
+                    <input type="text" name = "departure_city">
+                    <span>Arrival City</span>
+                    <input type="text" name = "arrival_city">
+                    <span>Customer Name</span>
+                    <input type="text" name = "customer_name">
+                    <button class="button",type="submit"> Search </button>
+                </div>
+            </form>
+            {% if not search_flight %}
+            <p ><strong>Woops: </strong> You have no corresponding records! </p>
+            {% endif %}
+        <table class = 'center' border = "1" cellspacing="0">
+            <tr>
+                <td>airline_name</td>
+                <td>flight_num</td>
+                <td>departure_airport</td>
+                <td>departure_time</td>
+                <td>arrival_airport</td>
+                <td>arrival_time</td>
+                <td>price</td>
+                <td>status</td>
+                <td>airplane_id</td>
+                <td>customer_email</td>
+            </tr>
+            {%for row in search_flight%}
+            <tr>
+                <!-- if select all from db, then output is a dictionary,
+                if select specifically then the output is a list -->
+                <td>{{row['airline_name']}}</td>
+                <td>{{row['flight_num']}}</td>
+                <td>{{row['depart_name']}}</td>
+                <td>{{row['depart_time']}}</td>
+                <td>{{row['arrive_name']}}</td>
+                <td>{{row['arrive_time']}}</td>
+                <td>{{row['price']}}</td>
+                <td>{{row['flight_status']}}</td>
+                <td>{{row['airplane_id']}}</td>
+                <td>{{row['customer_email']}}</td> 
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <h2>My Commissions</h2> 
+        <form  method="POST" action="/agent_home/{{session['username']}}">
+
+
+        <h3>
+            In the Past 30 Days: <br>
+            {% if month_money%}
+            You received {{month_money}} of total commissions<br>
+            
+            {% if tnum != 0%}
+            You received an average commission of {{average_com}} per ticket booked<br>
+            {%else%}
+            You received an average commission of 0<br>
+            {%endif%}
+            
+            You sold {{tnum}} tickets
+            {% endif %}
+        </h3>
+        </form>
+
+        <form  method="POST" action="/agent_home/{{session['username']}}">
+            <div class="input-group mb-3">
+              <span >From:</span>
+              <input type="date" name = "begin_date" class="form-control">
+              <span >To:</span>
+              <input type="date" name = "end_date" class="form-control">
+              <button class="button" type="submit">Search</button>
+            
+            </div>
+        </form>
+        <h3>
+            {% if inputmoney%}
+            You Received {{inputmoney}} of Total Commissions<br>
+            You Sold {{inputnum}} Tickets<br>
+            {%else%}
+            NO COMMISSIONS IN SELECTED TIME RANGE
+            {% endif %}
+        </h3>
+
+    </div>
+    <div>
+        <h2>Reports of Top Customers</h2> 
+
+        <!-- return an image -->
+        
+        <img src="{{ image1 }}" align="middle"/>
+        <img src="{{ image2 }}" align="middle"/>
+        <!-- Here should be a image -->
+        <!-- View Top Customer -->
+    </div>  
+    
+    <div>
+        <h2>More Options:</h2>
+        <button class="button" onclick="window.location.href='/upcoming_flight'";> Search For Flights and Purchase</button> <br>
+        <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+    </div>
+    {% if error %}
+    <p ><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    
+</body>
+</html>

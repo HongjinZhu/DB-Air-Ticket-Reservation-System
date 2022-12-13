@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>airline_staff_home</title>
+</head>
+<body>
+    <form action="/airline_staff/{{session['username']}}" method="POST">
+        <h1>  {{session['role']}} {{session['username']}} Home
+        </h1>
+    </form>
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+    <h2>{{session['company']}} Upcoming Flights: </h2> 
+    <form action="/airline_staff/{{session['username']}}" method="POST">
+        <div>
+            <span>Start Date</span>
+            <input type="date" name = "start_date">
+            <span>End Date</span>
+            <input type="date" name = "end_date">
+            <span>Flight Number</span>
+            <input type="text" name = "flight">
+            <span>Departure Airport</span>
+            <input type="text" name = "departure_airport">
+            <span>Arrival Airport</span>
+            <input type="text" name = "arrival_airport">
+            <span>Departure City</span>
+            <input type="text" name = "departure_city">
+            <span>Arrival City</span>
+            <input type="text" name = "arrival_city">
+            <button class="button" type="submit"> Search </button>
+        </div>
+    </form>
+    {% if isdefault %}
+    <p ><strong>Flights in Next 30 Days </strong> {{status}}</p>
+    {% endif %}
+    {% if not isdefault %}
+    <p ><strong>Flights You May Want </strong> {{status}}</p>
+    {% endif %}
+    <table class="center" border = "1" cellspacing="0">
+        <tr>
+            <td>Airline Name</td>
+            <td>Flight Number</td>
+            <td>Departure Airport</td>
+            <td>Departure Time</td>
+            <td>Arrival Airport</td>
+            <td>Arrival Time</td>
+            <td>Ticket Price</td>
+            <td>Flight Status</td>
+            <td>Airplane ID</td>
+            <td>Customers</td>
+        </tr> 
+        {% for row in all_flight %}
+        <tr>
+            <td>{{row['airline_name']}}</td>
+            <td>{{row['flight_num']}}</td>
+            <td>{{row['depart_name']}}</td>
+            <td>{{row['depart_time']}}</td>
+            <td>{{row['arrive_name']}}</td>
+            <td>{{row['arrive_time']}}</td>
+            <td>{{row['price']}}</td>
+            <td>{{row['flight_status']}}</td>
+            <td>{{row['airplane_id']}}</td>
+            <td><a href = "{{ url_for('view_customer', flight_num = row['flight_num'],airline_name = row['airline_name'],username = session['username']) }}";><button class="button" type="submit">View all customer </button></a></td> 
+        </tr>
+        {% endfor %} 
+    </table>
+    
+    {% if "Admin" in session['status']%}
+    <div>
+        <h2>
+            <h2>Admin Authority</h2>
+           <a href = "{{ url_for('create_new_flight', staff_email = session['username']) }}";> <button class="button">Create New Flights</button></a><br>
+            <a href = "{{ url_for('add_new_airplanes', staff_email = session['username']) }}"><button class="button">Add New Airplanes </button></a><br>
+            <a href = "{{ url_for('add_new_airports', staff_email = session['username']) }}"> <button class="button">Add New Airports</button> </a><br>
+            <a href = "{{ url_for('grant_permission', staff_email = session['username']) }}"><button class="button">Grant New Permissions</button></a><br>
+            <a href = "{{ url_for('add_booking_agents', staff_email = session['username']) }}"><button class="button">Add Booking Agents </button></a><br>
+
+        </h2>
+    </div>
+    {% endif %}
+
+    {% if "Operator" in session['status'] %}
+    <div>
+        <h2>
+            <h2>Operator Authority</h2>
+           <a href = " {{ url_for('change_flight_status', staff_email = session['username'], airline_name = session['company']) }}";> <button class="button">Change Flight Status</button></a ><br>
+        </h2>
+    </div>
+    {% endif %}
+
+
+    <div>
+        <h2>All Booking Agents</h2>
+        <table class="center" border="1" cellspacing="0">
+            <tr>
+                <td><h4>Top 5 Booking Agents in Last Month</h4></td>
+            </tr>
+            {%for row in lm_agent %}
+            <tr>
+                <td>{{row['booking_agent_email']}}</td>
+            </tr>
+            {% endfor %}
+            {% if not lm_agent %}
+            <tr>
+                <td> Not enough agent </td>
+            </tr>
+            {% endif %}
+            <tr><td><h4>Top 5 Booking Agents in Last Year </h4></td></tr>
+            {%for row in ly_agent %}
+                <tr>
+                    <td>{{row['booking_agent_email']}}</td>
+                </tr>
+            {% endfor %}
+            {% if not ly_agent %}
+            <tr>
+                <td> Not enough agent </td>
+            </tr>
+            {% endif %}
+            <tr><td><h4>Top 5 Booking Agents (on #commssions last year) </h4></td></tr>
+            {%for row in c_agent%}
+                <tr>
+                    <td>{{row['booking_agent_email']}}</td>
+                </tr>
+            {% endfor %}
+            {% if not c_agent %}
+            <tr>
+                <td> Not enough agent </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+    <div>
+        <h2>Top 10 Frequent Customers</h2>
+        <table class="center" border="1" cellspacing="0">
+            <tr>
+                <td>Frequent customer</td>
+                <td>View detail</td>
+            </tr>
+            {% for row in frequent_customer %}
+            <tr>
+                <td>{{row["customer_email"]}}</td>
+                <td><a href = "{{ url_for('view_freq_c', staff_email = session['username'], customer_email = row['customer_email']) }}";>  <button class="button" type ="button">Purchase History</button> </a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <h2>Comparison of Revenue Earned</h2>
+        {% if image3 != None %}
+        <img src="{{ image3 }}" align="middle"/>
+        {%else%}
+        <h3>
+            No Revenue was eanred in last month.
+        </h3>
+        {% endif %}
+        {% if image4 != None %}
+        <img src="{{ image4 }}" align="middle"/>
+        {%else%}
+        <h3>
+            No Revenue was eanred in last year.
+        </h3>
+        {% endif %}
+    </div>
+    <div>
+        <h2>Reports</h2>
+        {{ ly_total_amount[0]["COUNT(ticket.ticket_id)"] }} Tickets Were Sold Last Year, <br>
+        Including {{ lm_total_amount[0]["COUNT(ticket.ticket_id)"] }} Tickets Sold Last Month <br>
+        <a href = "{{ url_for('detailed_reports', staff_email = session['username']) }}";><button class="button" type ="button">View Detailed Report</button></a><br>
+    </div>
+    <div>
+        <h2>Top Destinations</h2>
+        <table class="center" border="1" cellspacing="0">
+            <tr>
+                <td><h4>Top 3 Destinations in Last 3 Months</h4></td>
+            </tr>
+            {%for row in m3des %}
+            {% if row %}
+            <tr>
+                <td>{{row['city']}}</td>
+
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <p></p>
+        <table class="center" border="1" cellspacing="0">
+            <td><h4>Top 3 Destiontations in Last Year</h4></td>
+            {%for row in lydes %}
+            {%if row%}
+            <tr>
+                <td>{{row['city']}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+    </div>
+    <button class="button" onclick="window.location.href='/login'";> Log Out </button>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>agent_register</title>
+    
+</head>
+<body>
+    
+    <h1>Register as Agent Here</h1>
+    <form action="/registerAuth_agent" method="POST">
+        <table class="center" ID='table1'>
+            <!-- Email_address -->
+            <tr>
+                <td>
+                    Email Address
+                </td>
+                <td>
+                    <input type="text" name = "email" placeholder="email" required/>
+                </td>
+            </tr>
+            <!-- Password -->
+            <tr>
+                <td>
+                    Password
+                </td>
+                <td>
+                    <input type="password" name = "password" placeholder="password" required/>
+                </td>
+            </tr>
+            <!-- Password2 -->
+            <tr>
+                <td>
+                    Confirm Password 
+                </td>
+                <td>
+                    <input type = "password" name = "password2" placeholder = "Please confirm again" required/>
+                </td>
+            </tr>
+                 <!-- BookingAgentId -->
+                 <tr>
+                    <td>
+                        Booking Agent ID 
+                    </td>
+                    <td>
+                        <input type = "text" name = "b_id" placeholder = "ID" required/>
+                    </td>
+                </tr>
+            <!-- Booking Agent Work For -->
+            <tr>
+                <td><span>Airline You Work For</span></td>
+                    <td><select name="airlineName" required>
+                        {% for i in airlines %}
+                        <option value = "{{i}}" > {{i}}</option>
+                        {% endfor %}
+                    </td>
+                </tr>
+        </table>
+    
+        <input class = 'button' type="submit"  name="submit" value="REGISTER" /><br>
+        <a href="/"><button class = 'button' type="button">HomePage</button></a>
+        <a href="/login"><button  class = 'button' type="button">Go to Login</button></a><br>
+    </form>
+    
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %} 
+    {% if id %}
+        <p class="error"><strong>Success:</strong> You have successfully create an account</p>
+    {%endif %}
+    {% if success %}
+        <p class="error"><strong>Success: </strong> You have successfully registered for {{success}} </p>
+    {% endif %}
+</body>
+</html>
+

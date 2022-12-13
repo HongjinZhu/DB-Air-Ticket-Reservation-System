@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>View all tickets</title>
+</head>
+<body>
+    <!-- post the info back to upcoming_flight_search route and search -->
+    <form action="/upcoming_flight/search" method ="POST">
+    <!-- serach for upcoming flights -->
+    <h1>All Upcoming Flights</h1>
+    <div >
+        <span>Departure Date</span>
+        <input type="date" name = "departure_date">
+        <span>Arrival Date</span>
+        <input type="date" name = "arrival_date">
+        <span>Flight Number</span>
+        <input type="text" name = "flight">
+        <span>Departure Airport</span>
+        <input type="text" name = "departure_airport">
+        <span>Arrival Airport</span>
+        <input type="text" name = "arrival_airport">
+        <span>Departure City</span>
+        <input type="text" name = "departure_city">
+        <span>Arrival City</span>
+        <input type="text" name = "arrival_city">
+        <button class = 'button' type="submit"> Search </button>
+    </div>
+    </form>
+
+    <table class="center" border = "1" cellspacing="0">
+        <tr>
+            <td>airline_name</td>
+            <td>flight_num</td>
+            <td>depart_name</td>
+            <td>depart_time</td>
+            <td>arrive_name</td>
+            <td>arrive_time</td>
+            <td>price</td>
+            <td>flight_status</td>
+            <td>airplane_id</td>
+            {% if session['role']  == "Customer" %}
+            <td> Purchase </td>
+            {% endif %}
+
+            {% if session['role'] == "Booking agent" %}
+            <td>Customer Email</td>
+            <td>Buy</td>
+            {% endif %}
+        </tr>
+        {%for row in upcoming_flight%}
+        <tr>
+            <!-- if select all from db, then output is a dictionary,
+            if select specifically then the output is a list -->
+            <td>{{row['airline_name']}}</td>
+            <td>{{row['flight_num']}}</td>
+            <td>{{row['depart_name']}}</td>
+            <td>{{row['depart_time']}}</td>
+            <td>{{row['arrive_name']}}</td>
+            <td>{{row['arrive_time']}}</td>
+            <td>{{row['price']}}</td>
+            <td>{{row['flight_status']}}</td>
+            <td>{{row['airplane_id']}}</td>
+            {% if session['role']  == "Customer" %}
+                {% if row['flight_status'] == "upcoming"%}
+                    <td>
+                        <a href = "{{ url_for('customer_purchase', customer_email = username, flight_num = row['flight_num'],airline_name = row['airline_name']) }}";><button class = 'button' type ="button">Buy</button> </a>
+                        </td>
+                {% else %}
+                    <td><button class = 'button' type="button" disabled> Buy</button>
+                    </td>
+                {% endif %}
+            {% endif %}
+
+            {% if session['role'] == "Booking agent" %}
+                <!-- 之后改成可以选择的 -->
+                {% if row['flight_status'] == "upcoming" and row['airline_name'] in session['company']%}
+                <form action="{{url_for('agent_purchase', agent_email = username, flight_num = row['flight_num'], airline_name = row['airline_name'])}} "  method ="POST">
+                <td>
+                    <input type="text" name = "customer_email">
+                </td>
+                <td>
+                    <button class = 'button' type="submit"> Buy </button> 
+                </td>
+                </form>
+                {% else %}
+                <td>
+                </td>
+                    <td><button type="button" disabled> Buy</button>
+                    </td>
+                {% endif %}
+
+           
+            {% endif %}
+           
+        </tr>
+        {% endfor %}
+    </table>
+    {% if error1 %}
+    <p class="error"><strong>Error: </strong> {{error1 }}</p>
+    {% endif %}
+    {% if session['role'] == "Booking agent" %}
+    <button class = 'button' onclick="window.location.href='/agent_home/{{session.username|e}}'";>Go Back</button>
+    
+    {% elif session['role'] == "Customer" %}
+    <button class = 'button' onclick="window.location.href='/customer_home/{{session.username|e}}'";>Go Back</button>
+    {% else %}
+    <button class = 'button' onclick="window.location.href='/'";>HomePage</button>
+    {% endif %}
+</body>
+</html>

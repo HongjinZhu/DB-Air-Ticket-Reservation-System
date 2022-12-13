@@ -1,0 +1,66 @@
+<!-- {# action: 提交到的地址, method: 表示提交的方式 #} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+    /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+    .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+    .button {
+        font-family: Garamond, serif;
+        flex: 1 1 auto;
+        margin: 10px;
+        padding: 13px;
+        border: 2px solid #718aa8;
+        text-align: center;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        background: rgb(179, 191, 225)
+        }
+        .button:after {
+        position: absolute;
+        transition: 0.3s;
+        content: "";
+        width: 0;
+        left: 50%;
+        bottom: 0;
+        height: 3px;
+        background: #ffffff;
+        }
+        .button:hover {
+        cursor: pointer;
+        }
+        .button:hover:after {
+        width: 100%;
+        left: 0;
+        }
+        table.center {margin-left: auto;margin-right: auto;}
+    </style>
+    <title>Homepage</title>
+</head>
+<br>
+<body>
+<h1 style = "position:relative; left:0px; top:40px;">Air Ticket Reservation System</h1>
+<table class="center" style = "position:relative; left:100px; top:60px;">
+    <tr>
+        <td>Returning User </td>
+        <td><button class="button" type="button" onclick="window.location.href='/login'";> Log In </a></button><br></td>
+    </tr>
+
+    <tr>
+        <td>First Time User  </td>
+        <td><button class="button" onclick="window.location.href='/customer_register'";>Customer Register </button></td>
+        <td><button class="button" onclick="window.location.href='/staff_register'";> Airline Staff Register </button></td>
+        <td><button class="button" onclick="window.location.href='/agent_register'";> Booking Agent Register </button></td>
+    </tr>
+    <tr>
+        <td>Skip Log In </td>
+        <td><button class="button" onclick="window.location.href='/upcoming_flight'";>Public Search</button></td>
+    </tr>
+</table>
+</body>
+</html>

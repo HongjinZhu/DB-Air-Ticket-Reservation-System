@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>Customer Homepage</title>
+</head>
+<body>
+
+    {% if session['role'] == "Booking agent" %}
+    <form action="/agent_home/{{session['username']}}" method="POST">
+        <h1>  {{session['role']}}: {{session['username']}}</h1>
+    </form>
+
+    <div class="if/else">
+    {% if status == 1%}
+        <div>
+            <h2>"You have successfully bought the ticket!"</h2> 
+            <h2>More Options:</h2>
+            <button class="button" onclick="window.location.href='/agent_home/{{session.username|e}}'";>Return to Customer Home</button>
+            <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy Another Ticket</button> <br>
+            <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+        </div>
+    {% elif status == 2%}
+        <div>
+            <h2>"Customer has already bought the ticket."</h2> 
+            <h2>More Options:</h2>
+            <button class="button" onclick="window.location.href='/agent_home/{{session.username|e}}'";>Return to Customer Home</button>
+            <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy Another Ticket</button> <br>
+            <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+        </div>
+    {% elif status == 3%}
+        <div>
+            <h2>"No seats left for the flight."</h2> 
+            <h2>More Options:</h2>
+            <button class="button" onclick="window.location.href='/agent_home/{{session.username|e}}'";>Back to home</button>
+            <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy more tickets</button> <br>
+            <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+        </div>
+        
+    {% endif %}
+    </div>
+    
+    {% elif session['role'] == "Customer" %}
+
+        <form action="/customer_home/{{session['username']}}" method="POST">
+            <h1>  {{session['role']}}: {{session['username']}}</h1>
+        </form>
+
+        <div class="if/else">
+        {% if status == 1%}
+            <div>
+                <h2>"You have successfully bought the ticket!"</h2> 
+                <h2>More Options:</h2>
+                <button class="button" onclick="window.location.href='/customer_home/{{session.username|e}}'";>Return to Customer Home</button>
+                <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy Another Ticket</button> <br>
+                <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+            </div>
+        {% elif status == 2%}
+            <div>
+                <h2>"You have already bought the ticket"</h2> 
+                <h2>More Options:</h2>
+                <button class="button" onclick="window.location.href='/customer_home/{{session.username|e}}'";>Return to Customer Home</button>
+                <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy Another Ticket</button> <br>
+                <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+            </div>
+        {% elif status == 3%}
+            <div>
+                <h2>"No seats left for the flight."</h2> 
+                <h2>More Options:</h2>
+                <button class="button" onclick="window.location.href='/customer_home/{{session.username|e}}'";>Return to Customer Home</button>
+                <button class="button" onclick="window.location.href='/upcoming_flight'";> Buy Another Ticket</button> <br>
+                <button class="button" onclick="window.location.href='/login'";> Log Out </button><br>
+            </div>
+            
+        {% endif %}
+        </div>
+    {% else %}
+    <button class="button" onclick="window.location.href='/'";>Go Back</button>
+    {% endif %}
+
+
+
+
+    
+
+
+
+   
+
+    {% if error %}
+    <p ><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+    
+</body>
+</body>
+</html>

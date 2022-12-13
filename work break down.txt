@@ -1,0 +1,7 @@
+Back end:
+    Together: Public Search, Log-in, Register
+    Ran Xu: Custormer and Booking Agent
+    Hongjin Zhu: Airline Staff
+
+Front end:
+    Each part according to back end

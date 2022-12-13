@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>body {font-family: Garamond, serif; font-size: x-large;text-align: center;background-image: linear-gradient(to right , #7f85bd, #ffffff);}
+        /* .button {font-family: Garamond, serif; font-size: x-large;text-align: left; background-color: white; opacity:0.6} */
+        .icomoon {font-family: Garamond, serif; font-size: x-large;text-align: left;}
+        .button {
+            font-family: Garamond, serif;
+            flex: 1 1 auto;
+            margin: 10px;
+            padding: 13px;
+            border: 2px solid #718aa8;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            background: rgb(179, 191, 225)
+            }
+            .button:after {
+            position: absolute;
+            transition: 0.3s;
+            content: "";
+            width: 0;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            background: #ffffff;
+            }
+            .button:hover {
+            cursor: pointer;
+            }
+            .button:hover:after {
+            width: 100%;
+            left: 0;
+            }
+            table.center {margin-left: auto;margin-right: auto;}
+        </style>
+    <title>Add new booking agents</title>
+</head>
+<body>
+    <form action = "/airline_staff/add_booking_agents/{{session['username']}}" method="POST">
+        <h2>Add a New Booking Agent for {{session['company']}} Airlines</h3>
+        <div >
+        </div><table class="center">
+            <tr>
+                <td><span>Booking Agent Email</span></td>
+                <td>
+                    <input name="agentEmail" type = "text" required>
+                </td>
+            </tr>
+            
+        </table>
+        <button class="button" type="submit"> Add Agent </button><br>
+        </div>
+
+    <button class="button" onclick="window.location.href='/airline_staff/{{session.username|e}}'";>Return to Staff Home</button>
+
+    {% if status %}
+    <p ><strong>Status: </strong> {{status}}</p>
+    {% endif %}
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong> {{error }}</p>
+    {% endif %}
+</body>
+</html>
